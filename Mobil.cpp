@@ -46,18 +46,11 @@ void display(void)
  glMatrixMode(GL_MODELVIEW);
  glLoadIdentity();
 
- /*
-  Keterangan:
-  glTranslatef : coba nilainya diubah2 untuk menempatkan pada posisi yang tepat dengan sumbu (x, y, z)
-  glRotated : coba nilainya diubah2 untuk memutar objek agar sesuai dengan keinginan.
-  cylinder: untuk membentuk model tabung
-
- */
 
   glTranslatef(1,1,-100);// besar kecilnya mobil
 
   Loop++;
-     glRotatef(Loop*direction,0.10,6.0,0.8);//mobil yang berotasi
+     glRotatef(Loop*camZ*camX*direction,0.10,6.0,0.8);//mobil berotasi
 
  glPushMatrix();//body
  //glpushmatrix();
