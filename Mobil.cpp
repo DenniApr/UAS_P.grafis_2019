@@ -1,14 +1,25 @@
+//headers
+#include<GL/gl.h>
 #include <windows.h>
 #include <GL/glut.h>
 #include <math.h>
 
-
+using namespace std;
+float xr=0, yr=0, zr=0;
 GLUquadric *q = gluNewQuadric();
 GLfloat camY = 0.0;
 GLfloat camX = 0.0;
 GLfloat camZ = 0.0;
 GLfloat angle = 1;
 GLfloat direction = 1;
+float rotX = 0.0, rotY = 0.0, translateZ = 0.0;
+
+
+float angleW=0.0;
+// actual vector representing the camera's direction
+float lx=0.0f,lz=-1.0f;
+// XZ position of the camera
+float x=0.0f,z=5.0f;
 
 void cylinder(float alas,float atas,float tinggi);
 void kerucut(float ngisor, float nduwur, float dowo);
@@ -37,33 +48,94 @@ void Mobil(void)
 
 }
 
+void ban1(){
+
+glPushMatrix();
+glColor3f(0.850, 0.847, 0.847);
+glTranslatef(20+xr, -8,-6);
+glRotatef(translateZ,0,0,0+xr);
+blok(2,2,2);
+glPopMatrix();
+
+glPushMatrix();//roda
+ glColor3f(0.0,0.0,0.0);
+ glTranslatef(20+xr, -8,-5);
+ glRotatef(0,0+xr,0,0);
+ cylinder(5, 5,3);
+glPopMatrix();
+}
+
+void ban2(){
+
+glPushMatrix();
+glColor3f(0.850, 0.847, 0.847);
+glTranslatef(-10+xr, -8,-6);
+glRotatef(translateZ,0,0,0+xr);
+blok(2,2,2);
+glPopMatrix();
+
+glPushMatrix();//roda
+ glColor3f(0.0,0.0,0.0);
+ glTranslatef(-10+xr, -8,-5);
+ glRotatef(0,0+xr,0,0);
+ cylinder(5, 5,3);
+
+glPopMatrix();
+
+}
+
+void ban3(){
+
+glPushMatrix();
+glColor3f(0.850, 0.847, 0.847);
+glTranslatef(18+xr, -8, 15);
+glRotatef(translateZ,0,0,0+xr);
+blok(2,2,2);
+
+glPopMatrix();
+
+ glPushMatrix();//roda
+ glColor3f(0.0,0.0,0.0);
+ glTranslatef(18+xr, -8, 15);
+ glRotatef(180,0+xr,0,0);
+ cylinder(5, 5,3);
+
+ glPopMatrix();
+}
+void ban4(){
+
+glPushMatrix();
+glColor3f(0.850, 0.847, 0.847);
+glTranslatef(-8+xr, -8, 16);
+glRotatef(translateZ,0,0,0+xr);
+blok(2,2,2);
+glPopMatrix();
+
+ glPushMatrix();//roda
+ glColor3f(0.0,0.0,0.0);
+ glTranslatef(-8+xr, -8, 15);
+ glRotatef(180,0+xr,0,0);
+ cylinder(5, 5,3);
+ glPopMatrix();
 
 
-void display(void)
-{
-
- glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
- glMatrixMode(GL_MODELVIEW);
- glLoadIdentity();
-
-
-  glTranslatef(1,1,-100);// besar kecilnya mobil
-
-  Loop++;
-     glRotatef(Loop*camZ*camX*direction,0.10,6.0,0.8);//mobil berotasi
-
- glPushMatrix();//body
+ }
+void car(){
+glPushMatrix();//body
  //glpushmatrix();
  glColor3f(1.0,0.0,1.0);
  blok(10, 3, 2);
 
  glTranslatef(0, 9, 0);
  blok(10, 3, 2);
+
  glTranslatef(10, -10,0);
  blok(10, 5.5, 2);
+
  glRotatef(-35, 0, 0, 15);
  glTranslatef(0, 7,0);
  blok(10, 2, 2);
+
  glTranslatef(2, 4.9,-2.5);
  glColor3f(0.9,0.9,0.9);// warna kaca
  blok(0.5, 20, 31);
@@ -84,23 +156,23 @@ void display(void)
  glPushMatrix();//roda
  glColor3f(0.0,0.0,0.0);
  glTranslatef(20, -8,-7);
- cylinder(5, 5,3);
+ //cylinder(5, 5,3);
 
  glColor3f(0.0,0.0,0.0);
  glTranslatef(-20, 8,7);
  glTranslatef(-5, -8,-7);
- cylinder(5, 5,3);
+ //cylinder(5, 5,3);
 
  glColor3f(0.0,0.0,0.0);
  glTranslatef(5, 8,7);
  glRotatef(180,0,180,0);
  glTranslatef(3,-8,-17);
- cylinder(5, 5,3);
+ //cylinder(5, 5,3);
 
  glColor3f(0.0,0.0,0.0);
  glTranslatef(-3,8,17);
  glTranslatef(-22,-8,-17);
- cylinder(5, 5,3);
+ //cylinder(5, 5,3);
 
  glColor3f(1.0,1.0,1.0);
 
@@ -147,14 +219,207 @@ void display(void)
  glTranslatef(-8,28,0);
  cylinder(1, 1,12);
 
-
  glPopMatrix();
+}
+
+void terrainloop(){
+
+glBegin(GL_QUADS);
+glTranslatef(0,-17,30);
+glVertex3f(10,100+xr,10);
+glEnd();
+}
+
+void terain(){
 
 
+
+//================================= TERAIN
+glPushMatrix();
+glColor3f(0.058, 0.482, 0.058);
+glTranslatef(0,-17,30);
+blok(10, 1000, 10);
+glPopMatrix();
+
+glPushMatrix();
+glColor3f(0.058, 0.482, 0.058);
+glTranslatef(0,-17,-120);
+blok(10, 1000, 10);
+glPopMatrix();
+
+
+//+++++++++++++++++++++============ JALAN
+glPushMatrix();
+glColor3f(0.258, 0.274, 0.243);
+glTranslatef(0,-17,-20);
+blok(5, 1000, 10);
+glPopMatrix();
+
+//MID
+glPushMatrix();
+glColor3f(0.956, 0.980, 0.941);
+glTranslatef(0,-15,0);
+blok(2,15,2);
+glPopMatrix();
+
+// X++
+glPushMatrix();
+glColor3f(0.956, 0.980, 0.941);
+glTranslatef(60,-15,0);
+blok(2,15,2);
+glPopMatrix();
+
+glPushMatrix();
+glColor3f(0.956, 0.980, 0.941);
+glTranslatef(120,-15,0);
+blok(2,15,2);
+glPopMatrix();
+
+glPushMatrix();
+glColor3f(0.956, 0.980, 0.941);
+glTranslatef(180,-15,0);
+blok(2,15,2);
+glPopMatrix();
+
+glPushMatrix();
+glColor3f(0.956, 0.980, 0.941);
+glTranslatef(240,-15,0);
+blok(2,15,2);
+glPopMatrix();
+
+glPushMatrix();
+glColor3f(0.956, 0.980, 0.941);
+glTranslatef(300,-15,0);
+blok(2,15,2);
+glPopMatrix();
+
+glPushMatrix();
+glColor3f(0.956, 0.980, 0.941);
+glTranslatef(360,-15,0);
+blok(2,15,2);
+glPopMatrix();
+
+glPushMatrix();
+glColor3f(0.956, 0.980, 0.941);
+glTranslatef(420,-15,0);
+blok(2,15,2);
+glPopMatrix();
+
+glPushMatrix();
+glColor3f(0.956, 0.980, 0.941);
+glTranslatef(480,-15,0);
+blok(2,15,2);
+glPopMatrix();
+
+// X--
+glPushMatrix();
+glColor3f(0.956, 0.980, 0.941);
+glTranslatef(-60,-15,0);
+blok(2,15,2);
+glPopMatrix();
+
+glPushMatrix();
+glColor3f(0.956, 0.980, 0.941);
+glTranslatef(-120,-15,0);
+blok(2,15,2);
+glPopMatrix();
+
+glPushMatrix();
+glColor3f(0.956, 0.980, 0.941);
+glTranslatef(-180,-15,0);
+blok(2,15,2);
+glPopMatrix();
+
+glPushMatrix();
+glColor3f(0.956, 0.980, 0.941);
+glTranslatef(-240,-15,0);
+blok(2,15,2);
+glPopMatrix();
+
+glPushMatrix();
+glColor3f(0.956, 0.980, 0.941);
+glTranslatef(-300,-15,0);
+blok(2,15,2);
+glPopMatrix();
+
+glPushMatrix();
+glColor3f(0.956, 0.980, 0.941);
+glTranslatef(-360,-15,0);
+blok(2,15,2);
+glPopMatrix();
+
+glPushMatrix();
+glColor3f(0.956, 0.980, 0.941);
+glTranslatef(-420,-15,0);
+blok(2,15,2);
+glPopMatrix();
+
+glPushMatrix();
+glColor3f(0.956, 0.980, 0.941);
+glTranslatef(-480,-15,0);
+blok(2,15,2);
+glPopMatrix();
+}
+
+void display(void)
+{
+
+ glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+ glMatrixMode(GL_MODELVIEW);
+ glLoadIdentity();
+
+ /*
+  Keterangan:
+  glTranslatef : coba nilainya diubah2 untuk menempatkan pada posisi yang tepat dengan sumbu (x, y, z)
+  glRotated : coba nilainya diubah2 untuk memutar objek agar sesuai dengan keinginan.
+  cylinder: untuk membentuk model tabung
+
+ */
+
+  glTranslatef(1,1,-100);// besar kecilnya mobil
+
+  Loop++;
+     glRotatef(Loop*camZ*camX*direction,0.10,6.0,0.8);//mobil yang berotasi
+
+glPushMatrix();
+ban1();
+glPopMatrix();
+
+
+glPushMatrix();
+ban2();
+glPopMatrix();
+
+
+glPushMatrix();
+ban3();
+glPopMatrix();
+
+
+glPushMatrix();
+//translateZ++;
+ban4();
+glPopMatrix();
+
+
+glPushMatrix();
+
+glTranslatef(0+xr,0,0);
+car();
+
+glPopMatrix();
+glPushMatrix();
+glTranslatef(0-xr,0,0);
+terain();
+glPopMatrix();
+//terain();
  glFlush();
  glutSwapBuffers();
 
 }
+
+
+
 
 void kerucut(float ngisor, float nduwur, float dowo)
 {
@@ -229,8 +494,20 @@ void reshape(GLsizei width, GLsizei height)
 
 void keyControl(int k, int x, int y)
 {
+    float fraction = 0.1f;
   switch(k) {
-    case GLUT_KEY_UP: camZ --; break;
+
+    case GLUT_KEY_PAGE_DOWN:
+        xr = xr - 1;
+        translateZ = translateZ + 10;
+        //camZ--;
+     break;
+    case GLUT_KEY_PAGE_UP: xr = xr + 1;
+        translateZ = translateZ - 10;
+        //camZ++;
+     break;
+
+     case GLUT_KEY_UP: camZ --; break;
     case GLUT_KEY_DOWN: camZ ++; break;
     case GLUT_KEY_LEFT: camX --; break;
     case GLUT_KEY_RIGHT: camX ++; break;
@@ -262,6 +539,7 @@ int main(int argc,char **argv)
  gluOrtho2D(-320., 320., -240.0, 240.0);
  glutIdleFunc(tampil);
  Mobil();
+
  glutMainLoop();
- return(0);
-} 
+ return(1);
+}
